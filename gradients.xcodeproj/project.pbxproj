@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D169F2E25B862C30016C678 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D169F2D25B862C30016C678 /* GradientView.swift */; };
 		2D8769A625B6E13A00059EE5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8769A525B6E13A00059EE5 /* AppDelegate.swift */; };
 		2D8769A825B6E13A00059EE5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8769A725B6E13A00059EE5 /* SceneDelegate.swift */; };
 		2D8769AA25B6E13A00059EE5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8769A925B6E13A00059EE5 /* ViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2D169F2D25B862C30016C678 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		2D8769A225B6E13A00059EE5 /* gradients.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gradients.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D8769A525B6E13A00059EE5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2D8769A725B6E13A00059EE5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -37,6 +39,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2D169F2C25B8629C0016C678 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				2D8769AE25B6E13B00059EE5 /* Assets.xcassets */,
+				2D8769B025B6E13B00059EE5 /* LaunchScreen.storyboard */,
+				2D8769A525B6E13A00059EE5 /* AppDelegate.swift */,
+				2D8769A725B6E13A00059EE5 /* SceneDelegate.swift */,
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		2D87699925B6E13A00059EE5 = {
 			isa = PBXGroup;
 			children = (
@@ -56,13 +69,11 @@
 		2D8769A425B6E13A00059EE5 /* gradients */ = {
 			isa = PBXGroup;
 			children = (
-				2D8769A525B6E13A00059EE5 /* AppDelegate.swift */,
-				2D8769A725B6E13A00059EE5 /* SceneDelegate.swift */,
+				2D8769B325B6E13B00059EE5 /* Info.plist */,
+				2D169F2C25B8629C0016C678 /* New Group */,
 				2D8769A925B6E13A00059EE5 /* ViewController.swift */,
 				2D8769AB25B6E13A00059EE5 /* Main.storyboard */,
-				2D8769AE25B6E13B00059EE5 /* Assets.xcassets */,
-				2D8769B025B6E13B00059EE5 /* LaunchScreen.storyboard */,
-				2D8769B325B6E13B00059EE5 /* Info.plist */,
+				2D169F2D25B862C30016C678 /* GradientView.swift */,
 			);
 			path = gradients;
 			sourceTree = "<group>";
@@ -139,6 +150,7 @@
 			files = (
 				2D8769AA25B6E13A00059EE5 /* ViewController.swift in Sources */,
 				2D8769A625B6E13A00059EE5 /* AppDelegate.swift in Sources */,
+				2D169F2E25B862C30016C678 /* GradientView.swift in Sources */,
 				2D8769A825B6E13A00059EE5 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -287,6 +299,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 49X97QXFJP;
 				INFOPLIST_FILE = gradients/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -305,6 +318,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 49X97QXFJP;
 				INFOPLIST_FILE = gradients/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
