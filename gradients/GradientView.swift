@@ -18,13 +18,18 @@ struct FactorData {
 
 struct PointMeta {
     let dist: CGFloat
-    let slope: CGFloat
-    let intercept: CGFloat
-    let left: Bool
     let pixel: PixelData
 }
 
+struct Poent: Hashable {
+    let x: CGFloat
+    let y: CGFloat
+}
+
 class GradientView: UIView {
+    
+    var distances = [Poent : CGFloat]()
+    var factors = [Poent: CGFloat]()
     
     let paleYellow = PixelData(a: 255, r: 253, g: 245, b: 203)
     let darkGreen = PixelData(a: 255, r: 65, g: 109, b: 86)
@@ -51,53 +56,52 @@ class GradientView: UIView {
         let width = Int(UIScreen.main.bounds.width)
         let height = Int(UIScreen.main.bounds.height)
         
-        let points = [
-            (c1, darkGreen),
-            (c2, yellow),
-            (c3, green),
-            (c4, paleYellow)
-        ]
-                
         var colors = [PixelData]()
         
         for y in 0..<height {
+            
+            let yDiff1 = CGFloat(y) - c1.y
+            let yDiff2 = CGFloat(y) - c2.y
+            let yDiff3 = CGFloat(y) - c3.y
+            let yDiff4 = CGFloat(y) - c4.y
+            
             for x in 0..<width {
 
-                let pointsMeta = points.map({ (p, pixel) -> PointMeta in
-                    
-                    let slope = -(p.y - CGFloat(y)) / (p.x - CGFloat(x))
-                    let intercept = p.x * slope - p.y
-                    
-                    return PointMeta(
-                        dist: dist(x1: p.x, x2: CGFloat(x), y1: p.y, y2: CGFloat(y)),
-                        slope: slope,
-                        intercept: intercept,
-                        left: CGFloat(y) <= (slope * CGFloat(x) + intercept),
-                        pixel: pixel
-                    )
-                }).sorted { a, b in
-                    a.dist > b.dist
-                }
-                                
-                let result = pointsMeta.reduce(
-                    FactorData(r: 0, g: 0, b: 0, f: 0)
-                ) { (t, c) in
-                    let maximum = max(1 - (c.dist / CGFloat(width)), 0)
-                    let factor = maximum * maximum
-                    return FactorData(
-                        r: t.r + CGFloat(c.pixel.r) * factor,
-                        g: t.g + CGFloat(c.pixel.g) * factor,
-                        b: t.b + CGFloat(c.pixel.b) * factor,
-                        f: t.f + factor
-                    )
-                }
+                let xDiff1 = c1.x - CGFloat(x)
+                let factor1 = factorr(xDiff: xDiff1, yDiff: yDiff1)
+                
+                let xDiff2 = c2.x - CGFloat(x)
+                let factor2 = factorr(xDiff: xDiff2, yDiff: yDiff2)
+                
+                let xDiff3 = c3.x - CGFloat(x)
+                let factor3 = factorr(xDiff: xDiff3, yDiff: yDiff3)
+                
+                let xDiff4 = c4.x - CGFloat(x)
+                let factor4 = factorr(xDiff: xDiff4, yDiff: yDiff4)
+                
+                let sumFactor = factor1 + factor2 + factor3 + factor4
+                
+                let sumR = CGFloat(darkGreen.r) * factor1
+                    + CGFloat(yellow.r) * factor2
+                    + CGFloat(green.r) * factor3
+                    + CGFloat(paleYellow.r) * factor4
+                
+                let sumG = CGFloat(darkGreen.g) * factor1
+                    + CGFloat(yellow.g) * factor2
+                    + CGFloat(green.g) * factor3
+                    + CGFloat(paleYellow.g) * factor4
+                
+                let sumB = CGFloat(darkGreen.b) * factor1
+                    + CGFloat(yellow.b) * factor2
+                    + CGFloat(green.b) * factor3
+                    + CGFloat(paleYellow.b) * factor4
                 
                 colors.append(
                     PixelData(
                         a: 255,
-                        r: UInt8(result.r / result.f),
-                        g: UInt8(result.g / result.f),
-                        b: UInt8(result.b / result.f)
+                        r: UInt8(sumR / sumFactor),
+                        g: UInt8(sumG / sumFactor),
+                        b: UInt8(sumB / sumFactor)
                     )
                 )
             }
@@ -111,10 +115,44 @@ class GradientView: UIView {
         image.draw(at: .zero)
     }
     
-    func dist(x1: CGFloat, x2: CGFloat, y1: CGFloat, y2: CGFloat) -> CGFloat {
-        let x = CGFloat(x1 - x2)
-        let y = CGFloat(y1 - y2)
-        return sqrt(x * x + y * y)
+    func factorr(xDiff: CGFloat, yDiff: CGFloat) -> CGFloat {
+        
+        let poent = Poent(x: abs(xDiff), y: abs(yDiff))
+        let altPoent = Poent(x: abs(yDiff), y: abs(xDiff))
+        
+        if let saved = factors[poent] {
+            return saved
+        } else if let saved = factors[altPoent] {
+            return saved
+        }
+        
+        let distance = dist(x: xDiff, y: yDiff)
+        
+        let maximum = max(1 - (distance / UIScreen.main.bounds.width), 0)
+        let factor = maximum * maximum
+        
+        factors[poent] = factor
+        factors[altPoent] = factor
+        
+        return factor
+    }
+    
+    func dist(x: CGFloat, y: CGFloat) -> CGFloat {
+        
+        let poent = Poent(x: abs(x), y: abs(y))
+        let altPoent = Poent(x: abs(y), y: abs(x))
+        
+        if let saved = distances[poent] {
+            return saved
+        } else if let saved = distances[altPoent] {
+            return saved
+        }
+        
+        let calculated = sqrt(x * x + y * y)
+        distances[poent] = calculated
+        distances[altPoent] = calculated
+
+        return calculated
     }
     
     func imageFromARGB32Bitmap(pixels: [PixelData], width: Int, height: Int) -> UIImage? {
