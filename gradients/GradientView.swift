@@ -30,6 +30,17 @@ class GradientView: UIView {
     
     var distances = [Poent : CGFloat]()
     var factors = [Poent: CGFloat]()
+    var factor1s = [Poent: (CGFloat, CGFloat, CGFloat, CGFloat)]()
+    var factor2s = [Poent: (CGFloat, CGFloat, CGFloat, CGFloat)]()
+    var factor3s = [Poent: (CGFloat, CGFloat, CGFloat, CGFloat)]()
+    var factor4s = [Poent: (CGFloat, CGFloat, CGFloat, CGFloat)]()
+    
+    var sumRs = [Poent: CGFloat]()
+    var sumGs = [Poent: CGFloat]()
+    var sumBs = [Poent: CGFloat]()
+    
+    var xDiffs = [Int: (CGFloat, CGFloat, CGFloat, CGFloat)]()
+    var yDiffs = [Int: (CGFloat, CGFloat, CGFloat, CGFloat)]()
     
     let paleYellow = PixelData(a: 255, r: 253, g: 245, b: 203)
     let darkGreen = PixelData(a: 255, r: 65, g: 109, b: 86)
@@ -60,41 +71,22 @@ class GradientView: UIView {
         
         for y in 0..<height {
             
-            let yDiff1 = CGFloat(y) - c1.y
-            let yDiff2 = CGFloat(y) - c2.y
-            let yDiff3 = CGFloat(y) - c3.y
-            let yDiff4 = CGFloat(y) - c4.y
+            let diffsY = yDiffs(y: y)
             
             for x in 0..<width {
-
-                let xDiff1 = c1.x - CGFloat(x)
-                let factor1 = factorr(xDiff: xDiff1, yDiff: yDiff1)
                 
-                let xDiff2 = c2.x - CGFloat(x)
-                let factor2 = factorr(xDiff: xDiff2, yDiff: yDiff2)
+                let diffsX = xDiff(x: x)
                 
-                let xDiff3 = c3.x - CGFloat(x)
-                let factor3 = factorr(xDiff: xDiff3, yDiff: yDiff3)
+                let factor1 = factorr1(xDiff: diffsX.0, yDiff: diffsY.0)
+                let factor2 = factorr2(xDiff: diffsX.1, yDiff: diffsY.1)
+                let factor3 = factorr3(xDiff: diffsX.2, yDiff: diffsY.2)
+                let factor4 = factorr4(xDiff: diffsX.3, yDiff: diffsY.3)
                 
-                let xDiff4 = c4.x - CGFloat(x)
-                let factor4 = factorr(xDiff: xDiff4, yDiff: yDiff4)
+                let sumFactor = factor1.3 + factor2.3 + factor3.3 + factor4.3
                 
-                let sumFactor = factor1 + factor2 + factor3 + factor4
-                
-                let sumR = CGFloat(darkGreen.r) * factor1
-                    + CGFloat(yellow.r) * factor2
-                    + CGFloat(green.r) * factor3
-                    + CGFloat(paleYellow.r) * factor4
-                
-                let sumG = CGFloat(darkGreen.g) * factor1
-                    + CGFloat(yellow.g) * factor2
-                    + CGFloat(green.g) * factor3
-                    + CGFloat(paleYellow.g) * factor4
-                
-                let sumB = CGFloat(darkGreen.b) * factor1
-                    + CGFloat(yellow.b) * factor2
-                    + CGFloat(green.b) * factor3
-                    + CGFloat(paleYellow.b) * factor4
+                let sumR = factor1.0 + factor2.0 + factor3.0 + factor4.0
+                let sumG = factor1.1 + factor2.1 + factor3.1 + factor4.1
+                let sumB = factor1.2 + factor2.2 + factor3.2 + factor4.2
                 
                 colors.append(
                     PixelData(
@@ -115,10 +107,146 @@ class GradientView: UIView {
         image.draw(at: .zero)
     }
     
+    func factorr1(xDiff: CGFloat, yDiff: CGFloat) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
+        
+        let poent = Poent(x: xDiff, y: yDiff)
+        let altPoent = Poent(x: yDiff, y: xDiff)
+        
+        if let saved = factor1s[poent] {
+            return saved
+        } else if let saved = factor1s[altPoent] {
+            return saved
+        }
+        
+        let distance = dist(x: xDiff, y: yDiff)
+        
+        let maximum = max(1 - (distance / UIScreen.main.bounds.width), 0)
+        let factor = maximum * maximum
+        
+        let rgb = (
+            CGFloat(darkGreen.r) * factor,
+            CGFloat(darkGreen.g) * factor,
+            CGFloat(darkGreen.b) * factor,
+            factor
+        )
+        
+        factor1s[poent] = rgb
+        factor1s[altPoent] = rgb
+        
+        return rgb
+    }
+    
+    func factorr2(xDiff: CGFloat, yDiff: CGFloat) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
+        
+        let poent = Poent(x: xDiff, y: yDiff)
+        let altPoent = Poent(x: yDiff, y: xDiff)
+        
+        if let saved = factor2s[poent] {
+            return saved
+        } else if let saved = factor2s[altPoent] {
+            return saved
+        }
+        
+        let distance = dist(x: xDiff, y: yDiff)
+        
+        let maximum = max(1 - (distance / UIScreen.main.bounds.width), 0)
+        let factor = maximum * maximum
+        
+        let rgb = (
+            CGFloat(yellow.r) * factor,
+            CGFloat(yellow.g) * factor,
+            CGFloat(yellow.b) * factor,
+            factor
+        )
+        
+        factor2s[poent] = rgb
+        factor2s[altPoent] = rgb
+        
+        return rgb
+    }
+    
+    func factorr3(xDiff: CGFloat, yDiff: CGFloat) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
+        
+        let poent = Poent(x: xDiff, y: yDiff)
+        let altPoent = Poent(x: yDiff, y: xDiff)
+        
+        if let saved = factor3s[poent] {
+            return saved
+        } else if let saved = factor3s[altPoent] {
+            return saved
+        }
+        
+        let distance = dist(x: xDiff, y: yDiff)
+        
+        let maximum = max(1 - (distance / UIScreen.main.bounds.width), 0)
+        let factor = maximum * maximum
+        
+        let rgb = (
+            CGFloat(green.r) * factor,
+            CGFloat(green.g) * factor,
+            CGFloat(green.b) * factor,
+            factor
+        )
+        
+        factor3s[poent] = rgb
+        factor3s[altPoent] = rgb
+        
+        return rgb
+    }
+    
+    func factorr4(xDiff: CGFloat, yDiff: CGFloat) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
+        
+        let poent = Poent(x: xDiff, y: yDiff)
+        let altPoent = Poent(x: yDiff, y: xDiff)
+        
+        if let saved = factor4s[poent] {
+            return saved
+        } else if let saved = factor4s[altPoent] {
+            return saved
+        }
+        
+        let distance = dist(x: xDiff, y: yDiff)
+        
+        let maximum = max(1 - (distance / UIScreen.main.bounds.width), 0)
+        let factor = maximum * maximum
+        
+        let rgb = (
+            CGFloat(paleYellow.r) * factor,
+            CGFloat(paleYellow.g) * factor,
+            CGFloat(paleYellow.b) * factor,
+            factor
+        )
+        
+        factor4s[poent] = rgb
+        factor4s[altPoent] = rgb
+        
+        return rgb
+    }
+    
+    func yDiffs(y: Int) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
+        if let saved = yDiffs[y] {
+            return saved
+        }
+        let cgY = CGFloat(y)
+        let diff = (abs(c1.y - cgY), abs(c2.y - cgY), abs(c3.y - cgY), abs(c4.y - cgY))
+        yDiffs[y] = diff
+        return diff
+    }
+    
+    func xDiff(x: Int) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
+        if let saved = xDiffs[x] {
+            return saved
+        }
+        let cgX = CGFloat(x)
+        let diff = (abs(c1.x - cgX), abs(c2.x - cgX), abs(c3.x - cgX), abs(c4.x - cgX))
+        xDiffs[x] = diff
+        return diff
+    }
+    
     func factorr(xDiff: CGFloat, yDiff: CGFloat) -> CGFloat {
         
-        let poent = Poent(x: abs(xDiff), y: abs(yDiff))
-        let altPoent = Poent(x: abs(yDiff), y: abs(xDiff))
+        let poent = Poent(x: xDiff, y: yDiff)
+        let altPoent = Poent(x: yDiff, y: xDiff)
         
         if let saved = factors[poent] {
             return saved
@@ -139,8 +267,8 @@ class GradientView: UIView {
     
     func dist(x: CGFloat, y: CGFloat) -> CGFloat {
         
-        let poent = Poent(x: abs(x), y: abs(y))
-        let altPoent = Poent(x: abs(y), y: abs(x))
+        let poent = Poent(x: x, y: y)
+        let altPoent = Poent(x: y, y: x)
         
         if let saved = distances[poent] {
             return saved
@@ -165,10 +293,12 @@ class GradientView: UIView {
         let bitsPerPixel = 32
 
         var data = pixels
-        guard let providerRef = CGDataProvider(data: NSData(bytes: &data,
-                                length: data.count * MemoryLayout<PixelData>.size)
+        guard let providerRef = CGDataProvider(
+            data: NSData(
+                bytes: &data,
+                length: data.count * MemoryLayout<PixelData>.size
             )
-            else { return nil }
+        ) else { return nil }
 
         guard let cgim = CGImage(
             width: width,
