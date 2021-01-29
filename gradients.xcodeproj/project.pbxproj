@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		2D169F2E25B862C30016C678 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D169F2D25B862C30016C678 /* GradientView.swift */; };
 		2D8769A625B6E13A00059EE5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8769A525B6E13A00059EE5 /* AppDelegate.swift */; };
-		2D8769A825B6E13A00059EE5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8769A725B6E13A00059EE5 /* SceneDelegate.swift */; };
 		2D8769AA25B6E13A00059EE5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8769A925B6E13A00059EE5 /* ViewController.swift */; };
 		2D8769AD25B6E13A00059EE5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D8769AB25B6E13A00059EE5 /* Main.storyboard */; };
 		2D8769AF25B6E13B00059EE5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D8769AE25B6E13B00059EE5 /* Assets.xcassets */; };
@@ -21,7 +20,6 @@
 		2D169F2D25B862C30016C678 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		2D8769A225B6E13A00059EE5 /* gradients.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gradients.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D8769A525B6E13A00059EE5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2D8769A725B6E13A00059EE5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		2D8769A925B6E13A00059EE5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2D8769AC25B6E13A00059EE5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2D8769AE25B6E13B00059EE5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -47,7 +45,6 @@
 				2D8769AE25B6E13B00059EE5 /* Assets.xcassets */,
 				2D8769B025B6E13B00059EE5 /* LaunchScreen.storyboard */,
 				2D8769A525B6E13A00059EE5 /* AppDelegate.swift */,
-				2D8769A725B6E13A00059EE5 /* SceneDelegate.swift */,
 			);
 			path = "New Group";
 			sourceTree = "<group>";
@@ -154,7 +151,6 @@
 				2D8769AA25B6E13A00059EE5 /* ViewController.swift in Sources */,
 				2D8769A625B6E13A00059EE5 /* AppDelegate.swift in Sources */,
 				2D169F2E25B862C30016C678 /* GradientView.swift in Sources */,
-				2D8769A825B6E13A00059EE5 /* SceneDelegate.swift in Sources */,
 				2DD6957425C2DAB200C34736 /* Geometry.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,13 +299,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 49X97QXFJP;
+				DEVELOPMENT_TEAM = F4S954HGMF;
 				INFOPLIST_FILE = gradients/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ai.doubletapp.gradients;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.doubletapp.gradients.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -322,13 +319,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 49X97QXFJP;
+				DEVELOPMENT_TEAM = F4S954HGMF;
 				INFOPLIST_FILE = gradients/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ai.doubletapp.gradients;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.doubletapp.gradients.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

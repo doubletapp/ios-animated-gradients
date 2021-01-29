@@ -93,8 +93,7 @@ class GradientView: UIView {
             c2 = CGPoint(x: c2.x + d2x, y: c2.y + d2y)
             c3 = CGPoint(x: c3.x + d3x, y: c3.y + d3y)
             c4 = CGPoint(x: c4.x + d4x, y: c4.y + d4y)
-            
-            
+
             if let image = generateImage() {
                 images.append(UIImage(cgImage: image))
             }
