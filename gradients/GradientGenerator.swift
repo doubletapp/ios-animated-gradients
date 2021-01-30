@@ -109,7 +109,7 @@ class GradientGenerator {
         let distance = calculateDistance(x: xDiff, y: yDiff)
         
         let maximum = max(1 - (distance / size), 0)
-        let factor = maximum * maximum * maximum
+        let factor = maximum * maximum * maximum * maximum
         
         let rgb = FactorData(
             r: CGFloat(pixel.r) * factor,

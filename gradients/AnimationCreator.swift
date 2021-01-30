@@ -26,49 +26,48 @@ struct AnimationResultData {
 
 class AnimationCreator {
     
+    static let framesPerGeneration = 5
+    
     init(gradientGenerator: GradientGenerator, fps: Int) {
         self.generator = gradientGenerator
         self.fps = CGFloat(fps)
-        self.totalIterations = fps / 10
+        self.totalIterations = self.fps / CGFloat(Self.framesPerGeneration)
     }
     
     private let generator: GradientGenerator
     private let fps: CGFloat
-    private let totalIterations: Int
+    private let totalIterations: CGFloat
     
     private var currentIteration: CGFloat = 0
     
+    var c1 = CGPoint.zero
+    var c2 = CGPoint.zero
+    var c3 = CGPoint.zero
+    var c4 = CGPoint.zero
+    
     private func generateImages(animationData: AnimationData) -> [UIImage] {
                         
-        let d1x = (animationData.end1.x - animationData.start1.x) / fps
-        let d1y = (animationData.end1.y - animationData.start1.y) / fps
-        let d2x = (animationData.end2.x - animationData.start2.x) / fps
-        let d2y = (animationData.end2.y - animationData.start2.y) / fps
-        let d3x = (animationData.end3.x - animationData.start3.x) / fps
-        let d3y = (animationData.end3.y - animationData.start3.y) / fps
-        let d4x = (animationData.end4.x - animationData.start4.x) / fps
-        let d4y = (animationData.end4.y - animationData.start4.y) / fps
+        if currentIteration == 0 {
+            c1 = CGPoint(x: animationData.start1.x, y: animationData.start1.y)
+            c2 = CGPoint(x: animationData.start2.x, y: animationData.start2.y)
+            c3 = CGPoint(x: animationData.start3.x, y: animationData.start3.y)
+            c4 = CGPoint(x: animationData.start4.x, y: animationData.start4.y)
+        }
         
-        var c1 = CGPoint(
-            x: animationData.start1.x + d1x * currentIteration * 10,
-            y: animationData.start1.y + d1y * currentIteration * 10
-        )
-        var c2 = CGPoint(
-            x: animationData.start2.x + d2x * currentIteration * 10,
-            y: animationData.start2.y + d2y * currentIteration * 10
-        )
-        var c3 = CGPoint(
-            x: animationData.start3.x + d3x * currentIteration * 10,
-            y: animationData.start3.y + d3y * currentIteration * 10
-        )
-        var c4 = CGPoint(
-            x: animationData.start4.x + d4x * currentIteration * 10,
-            y: animationData.start4.y + d4y * currentIteration * 10
-        )
+        let coeff: CGFloat = 1
+        
+        let d1x = (animationData.end1.x - animationData.start1.x) / fps * coeff
+        let d1y = (animationData.end1.y - animationData.start1.y) / fps * coeff
+        let d2x = (animationData.end2.x - animationData.start2.x) / fps * coeff
+        let d2y = (animationData.end2.y - animationData.start2.y) / fps * coeff
+        let d3x = (animationData.end3.x - animationData.start3.x) / fps * coeff
+        let d3y = (animationData.end3.y - animationData.start3.y) / fps * coeff
+        let d4x = (animationData.end4.x - animationData.start4.x) / fps * coeff
+        let d4y = (animationData.end4.y - animationData.start4.y) / fps * coeff
                 
         var images = [UIImage]()
         
-        for _ in 0..<10 {
+        for _ in 0..<Self.framesPerGeneration {
             
             c1 = CGPoint(x: c1.x + d1x, y: c1.y + d1y)
             c2 = CGPoint(x: c2.x + d2x, y: c2.y + d2y)
@@ -92,7 +91,7 @@ class AnimationCreator {
         let images = generateImages(animationData: animationData)
         
         let res: Bool
-        if Int(currentIteration) >= totalIterations {
+        if currentIteration >= totalIterations {
             currentIteration = 0
             res = true
         } else {

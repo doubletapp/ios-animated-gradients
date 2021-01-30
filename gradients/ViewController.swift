@@ -76,7 +76,7 @@ class ViewController: UIViewController {
         )
                 
         var images = animationCreator.createAnimation(animationData: animationData).images
-        var buffer = [UIImage]()//animationCreator.createAnimation(animationData: animationData).images
+        var buffer = [UIImage]()
                     
         var i = 0
         
@@ -108,24 +108,6 @@ class ViewController: UIViewController {
         }
         
         timer.fire()
-    }
-    
-    class func nextAnimation(c1: CGPoint, c2: CGPoint, c3: CGPoint, c4: CGPoint) -> AnimationData {
-        let c1New = c2
-        let c2New = c3
-        let c3New = c4
-        let c4New = c1
-        
-        return AnimationData(
-            start1: c1New,
-            start2: c2New,
-            start3: c3New,
-            start4: c4New,
-            end1: c2New,
-            end2: c3New,
-            end3: c4New,
-            end4: c1New
-        )
     }
     
     func shuffle() {
