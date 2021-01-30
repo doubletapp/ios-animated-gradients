@@ -1,13 +1,5 @@
 import Foundation
 import UIKit
-import CoreGraphics
-
-struct PointXs {
-    let c1X: CGFloat
-    let c2X: CGFloat
-    let c3X: CGFloat
-    let c4X: CGFloat
-}
 
 struct FactorData {
     let r: CGFloat
@@ -28,80 +20,34 @@ struct Poent: Hashable {
     let y: CGFloat
 }
 
-class GradientView: UIView {
-        
-    //Кэш для рассчета коэффициентов для цветов точек (с первой по четвертую)
+struct PointData {
+    let point: CGPoint
+    let pixel: PixelData
+}
+
+struct PointXs {
+    let c1X: CGFloat
+    let c2X: CGFloat
+    let c3X: CGFloat
+    let c4X: CGFloat
+}
+
+class GradientGenerator {
+    
+    init(size: CGFloat, pixels: PixelsData) {
+        self.size = size
+        self.pixels = pixels
+    }
+    
+    let size: CGFloat
+    let pixels: PixelsData
+    
     var factor1s = [Poent: FactorData]()
     var factor2s = [Poent: FactorData]()
     var factor3s = [Poent: FactorData]()
     var factor4s = [Poent: FactorData]()
     
-    // Цвета, которые были указаны в демо материалах от тг
-    let paleYellow = PixelData(a: 255, r: 253, g: 245, b: 203)
-    let darkGreen = PixelData(a: 255, r: 65, g: 109, b: 86)
-    let yellow = PixelData(a: 255, r: 247, g: 228, b: 140)
-    let green = PixelData(a: 255, r: 136, g: 163, b: 133)
-    
-    // Цвета, которые используются сейчас
-    let c = PixelData(a: 255, r: 0, g: 255, b: 255)
-    let m = PixelData(a: 255, r: 255, g: 0, b: 255)
-    let y = PixelData(a: 255, r: 255, g: 255, b: 0)
-    let k = PixelData(a: 255, r: 0, g: 0, b: 0)
-    
-    //Точки центров
-    lazy var c1: CGPoint = {
-        CGPoint(x: size, y: 0)
-    }()
-    lazy var c2: CGPoint = {
-        CGPoint(x: 0, y: 0)
-    }()
-    lazy var c3: CGPoint = {
-        CGPoint(x: 0, y: size)
-    }()
-    lazy var c4: CGPoint = {
-        CGPoint(x: size, y: size)
-    }()
-    
-    let size = UIScreen.main.bounds.width / 10
-    
-    var imageView: UIImageView!
-    
-    func setImage(image: CGImage?) {
-        guard let cgImage = image else {
-            return
-        }
-        
-        imageView.image = UIImage(cgImage: cgImage)
-    }
-    
-    func generateImages(ticks: CGFloat) -> [UIImage] {
-        
-        let d1x = (c2.x - c1.x) / ticks
-        let d1y = (c2.y - c1.y) / ticks
-        let d2x = (c3.x - c2.x) / ticks
-        let d2y = (c3.y - c2.y) / ticks
-        let d3x = (c4.x - c3.x) / ticks
-        let d3y = (c4.y - c3.y) / ticks
-        let d4x = (c1.x - c4.x) / ticks
-        let d4y = (c1.y - c4.y) / ticks
-        
-        var images = [UIImage]()
-        
-        for _ in 0..<Int(ticks) {
-            
-            c1 = CGPoint(x: c1.x + d1x, y: c1.y + d1y)
-            c2 = CGPoint(x: c2.x + d2x, y: c2.y + d2y)
-            c3 = CGPoint(x: c3.x + d3x, y: c3.y + d3y)
-            c4 = CGPoint(x: c4.x + d4x, y: c4.y + d4y)
-
-            if let image = generateImage() {
-                images.append(UIImage(cgImage: image))
-            }
-        }
-        return images
-    }
-    
-    func generateImage() -> CGImage? {
+    func generateImage(c1: CGPoint, c2: CGPoint, c3: CGPoint, c4: CGPoint) -> CGImage? {
         let width = Int(size)
         let height = Int(size)
         
@@ -116,12 +62,12 @@ class GradientView: UIView {
             
             for x in 0..<width {
                 
-                let diffsX = xDiff(x: x, xDiffs: &xDiffs)
+                let diffsX = xDiff(x: x, xDiffs: &xDiffs, c1: c1, c2: c2, c3: c3, c4: c4)
             
-                let factor1 = factorr(xDiff: diffsX.c1X, yDiff: diffsY.0, pixel: m, factors: &factor1s)
-                let factor2 = factorr(xDiff: diffsX.c2X, yDiff: diffsY.1, pixel: c, factors: &factor2s)
-                let factor3 = factorr(xDiff: diffsX.c3X, yDiff: diffsY.2, pixel: k, factors: &factor3s)
-                let factor4 = factorr(xDiff: diffsX.c4X, yDiff: diffsY.3, pixel: self.y, factors: &factor4s)
+                let factor1 = factorr(xDiff: diffsX.c1X, yDiff: diffsY.0, pixel: pixels.pixel1, factors: &factor1s)
+                let factor2 = factorr(xDiff: diffsX.c2X, yDiff: diffsY.1, pixel: pixels.pixel2, factors: &factor2s)
+                let factor3 = factorr(xDiff: diffsX.c3X, yDiff: diffsY.2, pixel: pixels.pixel3, factors: &factor3s)
+                let factor4 = factorr(xDiff: diffsX.c4X, yDiff: diffsY.3, pixel: pixels.pixel4, factors: &factor4s)
                 
                 let sumFactor = factor1.factor + factor2.factor + factor3.factor + factor4.factor
                 
@@ -158,7 +104,7 @@ class GradientView: UIView {
             return saved
         }
         
-        let distance = Geometry.distance(x: xDiff, y: yDiff)
+        let distance = calculateDistance(x: xDiff, y: yDiff)
         
         let maximum = max(1 - (distance / size), 0)
         let factor = maximum * maximum
@@ -176,7 +122,7 @@ class GradientView: UIView {
         return rgb
     }
     
-    private func xDiff(x: Int, xDiffs: inout [Int: PointXs]) -> PointXs {
+    private func xDiff(x: Int, xDiffs: inout [Int: PointXs], c1: CGPoint, c2: CGPoint, c3: CGPoint, c4: CGPoint) -> PointXs {
         if let saved = xDiffs[x] {
             return saved
         }
@@ -191,6 +137,26 @@ class GradientView: UIView {
         
         xDiffs[x] = diff
         return diff
+    }
+    
+    var distances = [Poent : CGFloat]()
+
+    func calculateDistance(x: CGFloat, y: CGFloat) -> CGFloat {
+        
+        let poent = Poent(x: x, y: y)
+        let altPoent = Poent(x: y, y: x)
+        
+        if let saved = distances[poent] {
+            return saved
+        } else if let saved = distances[altPoent] {
+            return saved
+        }
+        
+        let calculated = sqrt(x * x + y * y)
+        distances[poent] = calculated
+        distances[altPoent] = calculated
+
+        return calculated
     }
     
     private func imageFromARGB32Bitmap(pixels: [PixelData], width: Int, height: Int) -> CGImage? {

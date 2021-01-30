@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -16,22 +17,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="APi-nf-Ua1" customClass="GradientView" customModule="gradients" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0RY-xL-FNq">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="APi-nf-Ua1" secondAttribute="trailing" id="8zA-Jf-cj5"/>
-                            <constraint firstItem="APi-nf-Ua1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="BCo-Xh-OP7"/>
-                            <constraint firstAttribute="bottom" secondItem="APi-nf-Ua1" secondAttribute="bottom" id="ImT-8j-BKx"/>
-                            <constraint firstItem="APi-nf-Ua1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="yV6-uc-7Cq"/>
+                            <constraint firstAttribute="trailing" secondItem="0RY-xL-FNq" secondAttribute="trailing" id="AxA-5P-FFK"/>
+                            <constraint firstAttribute="bottom" secondItem="0RY-xL-FNq" secondAttribute="bottom" id="Ggg-VH-tQQ"/>
+                            <constraint firstItem="0RY-xL-FNq" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="JNS-vA-Hdx"/>
+                            <constraint firstItem="0RY-xL-FNq" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="zA9-cQ-ZC7"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="gradientView" destination="APi-nf-Ua1" id="Bhb-4q-eMH"/>
+                        <outlet property="imageView" destination="0RY-xL-FNq" id="S8X-de-pnv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
