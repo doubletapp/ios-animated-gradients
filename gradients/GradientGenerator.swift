@@ -47,7 +47,7 @@ class GradientGenerator {
     var factor3s = [Poent: FactorData]()
     var factor4s = [Poent: FactorData]()
     
-    func generateImage(c1: CGPoint, c2: CGPoint, c3: CGPoint, c4: CGPoint) -> CGImage? {
+    func generateImage(c1: CGPoint, c2: CGPoint, c3: CGPoint, c4: CGPoint) -> UIImage? {
         let width = Int(size)
         let height = Int(size)
         
@@ -86,7 +86,9 @@ class GradientGenerator {
             }
         }
         
-        return imageFromARGB32Bitmap(pixels: colors, width: width, height: height)
+        guard let cgImage = imageFromARGB32Bitmap(pixels: colors, width: width, height: height) else { return nil }
+        
+        return UIImage(cgImage: cgImage)
     }
     
     private func factorr(
@@ -107,7 +109,7 @@ class GradientGenerator {
         let distance = calculateDistance(x: xDiff, y: yDiff)
         
         let maximum = max(1 - (distance / size), 0)
-        let factor = maximum * maximum
+        let factor = maximum * maximum * maximum
         
         let rgb = FactorData(
             r: CGFloat(pixel.r) * factor,

@@ -26,8 +26,8 @@ struct AnimationResultData {
 
 class AnimationCreator {
     
-    init(size: CGFloat, pixels: PixelsData, fps: Int) {
-        self.generator = GradientGenerator(size: size, pixels: pixels)
+    init(gradientGenerator: GradientGenerator, fps: Int) {
+        self.generator = gradientGenerator
         self.fps = CGFloat(fps)
         self.totalIterations = fps / 10
     }
@@ -81,7 +81,7 @@ class AnimationCreator {
                 c3: c3,
                 c4: c4
             ) {
-                images.append(UIImage(cgImage: image))
+                images.append(image)
             }
         }
         currentIteration += 1
@@ -100,5 +100,24 @@ class AnimationCreator {
         }
         
         return AnimationResultData(images: images, animationFinished: res)
+    }
+    
+    var imagesRequired = true
+    
+    func startAnimating(animationData: AnimationData, returnImages: @escaping ([UIImage]) -> Void, completed: @escaping () -> Void) {
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else { return }
+            while true {
+                if self.imagesRequired {
+                    self.imagesRequired = false
+                    let result = self.createAnimation(animationData: animationData)
+                    returnImages(result.images)
+                    if result.animationFinished {
+                        break
+                    }
+                }
+            }
+            completed()
+        }
     }
 }
