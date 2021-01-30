@@ -1,5 +1,10 @@
 import UIKit
 
+enum Fps: Int {
+    case sixty = 60
+    case thirty = 30
+}
+
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -18,7 +23,7 @@ class ViewController: UIViewController {
         shuffle()
     }
     
-    let fps = 30
+    let fps: Fps = .thirty
     let size = UIScreen.main.bounds.width / 20
     
     let pixels = PixelsData(
@@ -27,20 +32,6 @@ class ViewController: UIViewController {
         pixel3: PixelData(a: 255, r: 65, g: 109, b: 86),
         pixel4: PixelData(a: 255, r: 247, g: 228, b: 140)
     )
-    
-    /*let pixels = PixelsData(
-        pixel1: PixelData(a: 255, r: 255, g: 0, b: 255),
-        pixel2: PixelData(a: 255, r: 0, g: 255, b: 255),
-        pixel3: PixelData(a: 255, r: 0, g: 0, b: 0),
-        pixel4: PixelData(a: 255, r: 255, g: 255, b: 0)
-    )*/
-    
-    /*
-    lazy var c1 = CGPoint(x: size, y: 0)
-    lazy var c2 = CGPoint(x: 0, y: 0)
-    lazy var c3 = CGPoint(x: 0, y: size)
-    lazy var c4 = CGPoint(x: size, y: size)
-    */
     
     lazy var c1 = CGPoint(x: size * 3 / 5, y: size * 3 / 20)
     lazy var c2 = CGPoint(x: size / 4, y: size * 3 / 5)
@@ -82,7 +73,7 @@ class ViewController: UIViewController {
         
         var isFinished = false
                 
-        let timer = Timer.scheduledTimer(withTimeInterval: 1 / Double(fps), repeats: true) { [weak self] timer in
+        let timer = Timer.scheduledTimer(withTimeInterval: 1 / Double(fps.rawValue), repeats: true) { [weak self] timer in
             if i >= images.count {
                 images = buffer
                 buffer = []
